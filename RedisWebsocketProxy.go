@@ -93,7 +93,7 @@ func (p *PubSubProxy) reader(w http.ResponseWriter, r *http.Request) {
 			p.addSub(message.Channel, c)
 			cmd := p.RedisDB.Get(p.RedisDB.Context(), message.Channel)
 			val, invalid := cmd.Result()
-			if !invalid {
+			if invalid == nil {
 				err = c.WriteJSON(ProxyMessage{Type: 2, Value: val, Channel: message.Channel})
 				if err != nil {
 					log.Println("write:", err)
